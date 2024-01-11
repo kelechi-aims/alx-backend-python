@@ -3,9 +3,10 @@
 Write a type-annotated function floor which takes a float n as argument
 and returns the floor of the float.
 """
+import math
 
 
-def floor(n: float) -> float:
+def floor(n: float) -> int:
     """
     Returns the floor of a floating-point number.
 
@@ -15,4 +16,4 @@ def floor(n: float) -> float:
     Returns:
     int: The floor of the input number.
     """
-    return int(n)
+    return math.floor(n)
