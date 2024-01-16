@@ -2,7 +2,7 @@
 
 Python Back-end
 
-Emmanuel Turlay, Staff Software Engineer at Cruise
+By: Emmanuel Turlay, Staff Software Engineer at Cruise
 
 Weight: 1
 
