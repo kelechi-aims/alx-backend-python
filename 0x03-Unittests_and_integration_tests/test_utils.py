@@ -2,7 +2,7 @@
 """ Parameterize a unit test """
 import unittest
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 from unittest.mock import patch, Mock
 
 
@@ -51,3 +51,30 @@ class TestGetJson(unittest.TestCase):
             result = get_json(test_url)
             mock_get.assert_called_once_with(test_url)
             self.assertEqual(result, test_payload)
+
+
+class TestMemoize(unittest.TestCase):
+    """
+    Test class for the memoize decorator
+    """
+    def test_memoize(self):
+        """ Test the memoize decorator """
+        class TestClass:
+            """
+            Test class with a_method and a_property decorated with memoize.
+            """
+            def a_method(self):
+                """ A method that returns 42 """
+                return 42
+
+            @memoize
+            def a_property(self):
+                """ A property that calls a_method """
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method') as mock_a_method:
+            test_instance = TestClass()
+            result1 = test_instance.a_property
+            result2 = test_instance.a_property
+
+            mock_a_method.assert_called_once()
