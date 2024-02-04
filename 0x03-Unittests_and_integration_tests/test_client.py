@@ -15,7 +15,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.get_json')
     def test_org(self, org_name, mock_get_json):
-        '''Test that GithubOrgClient org method returns the correct value.'''
+        """Test that GithubOrgClient org method returns the correct value."""
         github_client = GithubOrgClient(org_name)
         result = github_client.org()
         Expected_url = f"https://api.github.com/orgs/{org_name}"
@@ -24,10 +24,15 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch('client.GithubOrgClient.org')
     def test_public_repos_url(self, mock_org):
         """ Test _public_repos_url method of GithubOrgClient class."""
-        known_payload = {"repos_url": "https://api.github.com/orgs/testorg/repos"}
-        mock_org.return_value = known_payload
+        k_payload = {"repos_url": "https://api.github.com/orgs/testorg/repos"}
+        mock_org.return_value = k_payload
         github_client = GithubOrgClient("testorg")
 
-        with patch.object(GithubOrgClient, '_public_repos_url', new_callable=PropertyMock) as mock_public_repos_url:
+        with patch.object(
+            GithubOrgClient,
+            '_public_repos_url',
+            new_callable=PropertyMock
+        ) as mock_public_repos_url:
+            mock_public_repos_url.return_value = k_payload["repos_url"]
             result = github_client._public_repos_url
-            self.assertEqual(result, known_payload["repos_url"])
+            self.assertEqual(result, k_payload["repos_url"])
