@@ -2,7 +2,7 @@
 """ Parameterize and patch as decorators """
 import unittest
 from client import GithubOrgClient
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized
 
 
@@ -14,12 +14,12 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc")
     ])
     @patch('client.get_json')
-    def test_org(self, org_name, mock_get_json):
+    def test_org(self, org_name, mock):
         """Test that GithubOrgClient org method returns the correct value."""
         github_client = GithubOrgClient(org_name)
         result = github_client.org()
         Expected_url = f"https://api.github.com/orgs/{org_name}"
-        mock_get_json.assert_called_once_with(Expected_url)
+        mock.assert_called_once_with(Expected_url)
 
     @patch('client.GithubOrgClient.org')
     def test_public_repos_url(self, mock_org):
@@ -36,3 +36,28 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_public_repos_url.return_value = k_payload["repos_url"]
             result = github_client._public_repos_url
             self.assertEqual(result, k_payload["repos_url"])
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock_get_json):
+        """ Method to unit-test GithubOrgClient.public_repos."""
+
+        # Define a known payload to be returned by get_json
+        known_payload = [{"name": "repo1"}, {"name": "repo2"}]
+
+        # Mock get_json to return the known payload
+        mock_get_json.return_value = known_payload
+
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mocked:
+            mocked.return_value = "school"
+            # Create an instance of GithubOrgClient
+            githuh_client = GithubOrgClient("testorg")
+
+            # Call the public_repos method
+            result = githuh_client.public_repos()
+
+            expected_repos = ["repo1", "repo2"]
+            self.assertEqual(result, expected_repos)
+
+            mocked.assert_called_once()
+            mock_get_json.assert_called_once()
