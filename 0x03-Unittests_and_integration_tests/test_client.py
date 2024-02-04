@@ -9,14 +9,13 @@ from parameterized import parameterized
 class TestGithubOrgClient(unittest.TestCase):
     """ Test GithubOrgClient class """
 
-    @patch('client.get_json')
     @parameterized.expand([
         ("google"),
         ("abc")
     ])
+    @patch('client.get_json')
     def test_org(self, org_name, mock_get_json):
-        """ Test that GithubOrgClient.org returns the correct value. """
-
+        """ Test the org method """
         github_client = GithubOrgClient(org_name)
         result = github_client.org()
         Expected_url = f"https://api.github.com/orgs/{org_name}"
