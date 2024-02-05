@@ -6,6 +6,7 @@ from unittest.mock import patch, PropertyMock, Mock, MagicMock
 from parameterized import parameterized, parameterized_class
 from fixtures import TEST_PAYLOAD
 from urllib import response
+import requests
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -83,12 +84,12 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """ Setup class method """
-        cls.get_patcher = patch('request.get')
+        cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
 
         cls.mock_get.side_effect = [
-            unittest.mock.Mock(json=lambda: cls.org_payload),
-            unittest.mock.Mock(json=lambda: cls.repos_payload),
+            cls.org_payload,
+            cls.repos_payload,
         ]
 
 
@@ -96,3 +97,10 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def tearDownClass(cls):
         """ Clean up after the test """
         cls.get_patcher.stop()
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock_get_json):
+        """Test GithubOrgClient.public_repos method"""
+        mock_get_json.side_effect = [org_payload, repos_payload]
+        result = GithubOrgClient.public_repos()
+        self.assertEqual(result, self.expected_repos)
