@@ -13,7 +13,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ("google",),
-        ("abc",),
+        ("abc",)
     ])
     @patch('client.get_json')
     def test_org(self, org_name, mock):
@@ -61,8 +61,8 @@ class TestGithubOrgClient(unittest.TestCase):
             expected_repos = ["repo1", "repo2"]
             self.assertEqual(result, expected_repos)
 
-            mocked.assert_called_once()
             mock_get_json.assert_called_once()
+            mocked.assert_called_once()
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
@@ -70,8 +70,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, repo, license_key, expected_result):
         """ Method to unit-test GithubOrgClient.has_license. """
-        github_client = GithubOrgClient("testorg")
-        result = github_client.has_license(repo, license_key)
+        result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected_result)
 
 
