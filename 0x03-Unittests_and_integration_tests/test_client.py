@@ -9,11 +9,12 @@ from urllib import response
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """ Test GithubOrgClient class """
+    """Test class GithubOrgClient class"""
+
     @parameterized.expand([
-        ("google",),
-        ("abc",)
-    ])
+        ('google',),
+        ('abc',)
+    ])    
     @patch('client.get_json')
     def test_org(self, org_name, mock):
         """Test that GithubOrgClient org method returns the correct value"""
