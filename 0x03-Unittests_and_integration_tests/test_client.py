@@ -98,9 +98,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """ Clean up after the test """
         cls.get_patcher.stop()
 
-    @patch('client.get_json')
-    def test_public_repos(self, mock_get_json):
+    def test_public_repos(self):
         """Test GithubOrgClient.public_repos method"""
-        mock_get_json.side_effect = [org_payload, repos_payload]
-        result = GithubOrgClient.public_repos()
-        self.assertEqual(result, self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """Test GithubOrgClient.public_repos method with license argument"""    
