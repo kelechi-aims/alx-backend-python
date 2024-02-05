@@ -78,18 +78,21 @@ class TestGithubOrgClient(unittest.TestCase):
     "org_payload", "repos_payload", "expected_repos", "apache2_repos"],
     TEST_PAYLOAD)
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """ Class to test the GithubOrgClient.public_repos method
-    in an integration test.
-    """
+    """ Integration test class for GithubOrgClient. """
+
     @classmethod
     def setUpClass(cls):
         """ Setup class method """
-        cls.get_patcher = patch('request.get', side_effect=[
-            cls.org_payload, cls.repos_payload
-        ])
+        cls.get_patcher = patch('request.get')
         cls.mock_get = cls.get_patcher.start()
+
+        cls.mock_get.side_effect = [
+            cls.org_payload,
+            cls.repos_payload
+        ]
+
 
     @classmethod
     def tearDownClass(cls):
-        """ Teardown class method """
+        """ Clean up after the test """
         cls.get_patcher.stop()
