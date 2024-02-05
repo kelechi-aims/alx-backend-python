@@ -12,9 +12,9 @@ class TestGithubOrgClient(unittest.TestCase):
     """Test class GithubOrgClient class"""
 
     @parameterized.expand([
-        ('google',),
-        ('abc',)
-    ])    
+        ("google",),
+        ("abc",),
+    ])
     @patch('client.get_json')
     def test_org(self, org_name, mock):
         """Test that GithubOrgClient org method returns the correct value"""
@@ -74,7 +74,10 @@ class TestGithubOrgClient(unittest.TestCase):
         result = github_client.has_license(repo, license_key)
         self.assertEqual(result, expected_result)
 
-@parameterized_class(["org_payload", "repos_payload", "expected_repos", "apache2_repos"], TEST_PAYLOAD)
+
+@parameterized_class([
+    "org_payload", "repos_payload", "expected_repos", "apache2_repos"],
+    TEST_PAYLOAD)
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """ Class to test the GithubOrgClient.public_repos method
     in an integration test.
