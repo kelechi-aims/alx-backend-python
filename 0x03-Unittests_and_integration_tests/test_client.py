@@ -92,7 +92,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             cls.repos_payload,
         ]
 
-
     @classmethod
     def tearDownClass(cls):
         """ Clean up after the test """
@@ -102,4 +101,4 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """Test GithubOrgClient.public_repos method"""
 
     def test_public_repos_with_license(self):
-        """Test GithubOrgClient.public_repos method with license argument"""    
+        """Test GithubOrgClient.public_repos method with license argument"""
